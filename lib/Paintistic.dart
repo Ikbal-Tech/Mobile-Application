@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 //import 'package:url_launcher_web/url_launcher_web.dart';
 import 'package:floodfill_image/floodfill_image.dart';
+import 'StorePageTest.dart';
 import 'painting_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'store_page.dart';
@@ -101,6 +102,26 @@ class _MyHomePageState extends State<MyHomePage> {
               width: 50,
               height: 50,
             ),
+            ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+                    (Set<MaterialState> states) {
+                  if (states.contains(MaterialState.disabled))
+                    return Colors.red;
+                  return null; // Defer to the widget's default.
+                }),
+                foregroundColor: MaterialStateProperty.resolveWith<Color?>(
+                    (Set<MaterialState> states) {
+                  if (states.contains(MaterialState.disabled))
+                    return Colors.blue;
+                  return null; // Defer to the widget's default.
+                }),
+              ),
+              onPressed: () {
+                _navigateToTestPage(context);
+              },
+              child: Text('Test Mode'),
+            ),
           ],
         ),
       ),
@@ -115,5 +136,10 @@ class _MyHomePageState extends State<MyHomePage> {
   void _navigateToHowToUsePage(BuildContext context) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => HowToUsePage()));
+  }
+
+  void _navigateToTestPage(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => StorePageTest(server: widget.server)));
   }
 }
