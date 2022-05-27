@@ -1,4 +1,4 @@
-# PAINTISTIC
+# paintistic_app
 
 A new Flutter project.
 

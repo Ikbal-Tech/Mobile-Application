@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1048813130657",
+    "project_id": "bt-without-chat",
+    "storage_bucket": "bt-without-chat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1048813130657:android:c17472f5ef2584f1ac31e0",
+        "android_client_info": {
+          "package_name": "com.example.paintistic_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1048813130657-cm9747q2g6qtuiahlndigmvbuq5pv398.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDND7cXQ3kVX4ubnF50SePdA58AiRHF0u8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1048813130657-cm9747q2g6qtuiahlndigmvbuq5pv398.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
