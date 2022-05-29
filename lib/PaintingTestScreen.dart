@@ -7,11 +7,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class PaintingTestScreen extends StatefulWidget {
   late String b;
   late String file;
   late final BluetoothDevice server;
+  //final FirebaseApp app;
 
   PaintingTestScreen(
       {required this.b, required this.file, required this.server});
@@ -38,6 +40,9 @@ class _PaintingTestScreenState extends State<PaintingTestScreen> {
   Color _fillColor = Colors.amber;
   late String file_inner;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseDatabase referencedatabase = FirebaseDatabase(
+      databaseURL:
+          'https://bt-without-chat-default-rtdb.europe-west1.firebasedatabase.app/');
 
   List array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   List<String> thoughts = List<String>.empty(growable: true);
@@ -59,6 +64,8 @@ class _PaintingTestScreenState extends State<PaintingTestScreen> {
   bool get isConnected => (connection?.isConnected ?? false);
 
   bool isDisconnecting = false;
+
+  late DatabaseReference ref;
 
   @override
   void initState() {
@@ -109,6 +116,9 @@ class _PaintingTestScreenState extends State<PaintingTestScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref = referencedatabase.refFromURL(
+        'https://bt-without-chat-default-rtdb.europe-west1.firebasedatabase.app/');
+
     final List<Row> list = messages.map((_message) {
       return Row(
         children: <Widget>[
@@ -233,15 +243,15 @@ class _PaintingTestScreenState extends State<PaintingTestScreen> {
 
   void send_data_to_firebase() {
     if (_fillColor != Colors.amber) {
-      String col = 'RED';
+      int col = 0;
       if (_fillColor.hashCode == Colors.red.hashCode) {
-        col = 'RED';
+        col = 0;
       }
       if (_fillColor.hashCode == Colors.green.hashCode) {
-        col = 'GREEN';
+        col = 1;
       }
       if (_fillColor.hashCode == Colors.blue.hashCode) {
-        col = 'BLUE';
+        col = 2;
       }
       //send to firebase, but parse it first
 
@@ -250,6 +260,30 @@ class _PaintingTestScreenState extends State<PaintingTestScreen> {
         for (int k = 0; k < 15; k++) {
           array[k] = int.parse(arr[k]);
         }
+        String? key = ref.child('FIRST TRY').push().key;
+
+        ref.child('FIRST TRY').child(key!).set({
+          'id': key,
+          'N1': array[0],
+          'N1': array[0],
+          'N2': array[1],
+          'N3': array[2],
+          'N4': array[3],
+          'N5': array[4],
+          'N6': array[5],
+          'N7': array[6],
+          'N8': array[7],
+          'N9': array[8],
+          'N10': array[9],
+          'N11': array[10],
+          'N12': array[11],
+          'N13': array[12],
+          'N14': array[13],
+          'N15': array[14],
+          'COLOR': col
+        });
+
+        /*
         CollectionReference received_ints = firestore.collection('FIRST_TRY');
         received_ints.add({
           'N1': array[0],
@@ -269,6 +303,8 @@ class _PaintingTestScreenState extends State<PaintingTestScreen> {
           'N15': array[14],
           'COLOR': col
         });
+
+        */
       }
 
       thoughts.clear();
