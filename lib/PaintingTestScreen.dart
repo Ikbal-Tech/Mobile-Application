@@ -37,7 +37,8 @@ class _Message {
 }
 
 class _PaintingTestScreenState extends State<PaintingTestScreen> {
-  Color _fillColor = Colors.amber;
+  Color _fillColor = Colors.white;
+  bool think_enabled = false;
   late String file_inner;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   final FirebaseDatabase referencedatabase = FirebaseDatabase(
@@ -145,23 +146,16 @@ class _PaintingTestScreenState extends State<PaintingTestScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            "Select color and think, then if it is OK,send data to firebase"),
+        title: Text("Paintistic"),
         centerTitle: true,
       ),
-      body: Center(
-        child: SingleChildScrollView(
+      body: Container(
+          color: _fillColor,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              FloodFillImage(
-                imageProvider: AssetImage(file_inner),
-                fillColor: _fillColor,
-                avoidColor: [Colors.transparent, Colors.black],
-                tolerance: 10,
-                width: 350,
-                height: 350,
-              ),
+            children: [
+              Text(
+                  'First press color button\nIf you are ready, then press start to think\nIf it is OK, then press send data to firebase'),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -214,6 +208,19 @@ class _PaintingTestScreenState extends State<PaintingTestScreen> {
               ),
               TextButton(
                 onPressed: () {
+                  setState(() {
+                    think_enabled = true;
+                  });
+                },
+                child: Text(
+                  "Start to think",
+                  style: TextStyle(color: Colors.black),
+                ),
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.cyan)),
+              ),
+              TextButton(
+                onPressed: () {
                   send_data_to_firebase();
                 },
                 child: Text(
@@ -235,14 +242,12 @@ class _PaintingTestScreenState extends State<PaintingTestScreen> {
                 ),
               )
             ],
-          ),
-        ),
-      ),
+          )),
     );
   }
 
   void send_data_to_firebase() {
-    if (_fillColor != Colors.amber) {
+    if (think_enabled) {
       int col = 0;
       if (_fillColor.hashCode == Colors.red.hashCode) {
         col = 0;
@@ -260,9 +265,9 @@ class _PaintingTestScreenState extends State<PaintingTestScreen> {
         for (int k = 0; k < 15; k++) {
           array[k] = int.parse(arr[k]);
         }
-        String? key = ref.child('FIRST TRY').push().key;
+        String? key = ref.child('EIGHTH TRY').push().key;
 
-        ref.child('FIRST TRY').child(key!).set({
+        ref.child('EIGHTH TRY').child(key!).set({
           'id': key,
           'N1': array[0],
           'N1': array[0],
@@ -282,56 +287,13 @@ class _PaintingTestScreenState extends State<PaintingTestScreen> {
           'N15': array[14],
           'COLOR': col
         });
-
-        /*
-        CollectionReference received_ints = firestore.collection('FIRST_TRY');
-        received_ints.add({
-          'N1': array[0],
-          'N2': array[1],
-          'N3': array[2],
-          'N4': array[3],
-          'N5': array[4],
-          'N6': array[5],
-          'N7': array[6],
-          'N8': array[7],
-          'N9': array[8],
-          'N10': array[9],
-          'N11': array[10],
-          'N12': array[11],
-          'N13': array[12],
-          'N14': array[13],
-          'N15': array[14],
-          'COLOR': col
-        });
-
-        */
       }
 
       thoughts.clear();
     }
-/*
-    CollectionReference firstryref = firestore.collection('FIRST_TRY');
-    List values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
-    firstryref.add({
-      'N1': 1,
-      'N2': 2,
-      'N3': 3,
-      'N4': 4,
-      'N5': 5,
-      'N6': 6,
-      'N7': 7,
-      'N8': 8,
-      'N9': 9,
-      'N10': 10,
-      'N11': 11,
-      'N12': 12,
-      'N13': 13,
-      'N14': 14,
-      'N15': 15,
-    });
-
-   */
+    think_enabled = false;
+    _fillColor = Colors.white;
   }
 
   void _onDataReceived(Uint8List data) {
@@ -384,7 +346,7 @@ class _PaintingTestScreenState extends State<PaintingTestScreen> {
     }
     setState(() {
       data_text = messages.last.text;
-      if (_fillColor != Colors.amber) {
+      if (think_enabled) {
         thoughts.add(data_text);
       }
     });
