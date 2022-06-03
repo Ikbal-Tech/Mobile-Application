@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:paintistic_app/select_modal.dart';
 import 'painting_screen.dart';
+import 'select_modal2.dart';
 
-class StorePage extends StatelessWidget {
+class StorePage2 extends StatelessWidget {
   late String path;
   final BluetoothDevice server;
 
-  StorePage({required this.server});
+  StorePage2({required this.server});
   List a = [
     "assets/kopek.png",
     "assets/at.png",
@@ -43,7 +44,7 @@ class StorePage extends StatelessWidget {
                     iconSize: 40,
                     onPressed: () {
                       path = a[index];
-                      _navigateToSelectModalPage(context, path);
+                      _navigateToSelectModalPage2(context, path);
                     },
                   ),
                 ],
@@ -55,11 +56,11 @@ class StorePage extends StatelessWidget {
     );
   }
 
-  void _navigateToSelectModalPage(
+  void _navigateToSelectModalPage2(
     BuildContext context,
     String path,
   ) {
     Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => SelectModal(path, server)));
+        MaterialPageRoute(builder: (context) => SelectModal2(path, server)));
   }
 }

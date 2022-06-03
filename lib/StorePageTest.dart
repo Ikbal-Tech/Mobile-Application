@@ -12,6 +12,8 @@ class StorePageTest extends StatelessWidget {
     "assets/kopek.png",
     "assets/at.png",
     "assets/peng.png",
+    "assets/balık.png",
+    "assets/sonic.png"
   ];
   @override
   Widget build(BuildContext context) {
@@ -55,7 +57,6 @@ class StorePageTest extends StatelessWidget {
 
   void _navigateToPaintingTestPage(BuildContext context, String path) {
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) =>
-            PaintingTestScreen(b: 'title', file: path, server: server)));
+        builder: (context) => PaintingTestScreen(b: 'title', server: server)));
   }
 }

@@ -2,9 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 //import 'package:url_launcher_web/url_launcher_web.dart';
 import 'package:floodfill_image/floodfill_image.dart';
+import 'PaintingTestScreen.dart';
 import 'StorePageTest.dart';
 import 'painting_screen.dart';
 import 'package:image_picker/image_picker.dart';
+import 'select_from_store2.dart';
 import 'store_page.dart';
 import 'how_to_use.dart';
 import 'dart:io';
@@ -23,9 +25,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'PAINTISTIC',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-      ),
+      theme: ThemeData(primaryColor: Colors.black, primarySwatch: Colors.grey),
       home: MyHomePage(title: 'PAINTISTIC', server: server),
     );
   }
@@ -56,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Image.asset('assets/zyro-image.jpg'),
+              child: Image.asset('assets/paintistic logo.jpg'),
             ),
             ElevatedButton(
               style: ButtonStyle(
@@ -100,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             SizedBox(
               width: 50,
-              height: 50,
+              height: 20,
             ),
             ElevatedButton(
               style: ButtonStyle(
@@ -118,9 +118,29 @@ class _MyHomePageState extends State<MyHomePage> {
                 }),
               ),
               onPressed: () {
-                _navigateToTestPage(context);
+                _navigateToPaintingTestPage(context, 'path');
               },
               child: Text('Test Mode'),
+            ),
+            ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+                    (Set<MaterialState> states) {
+                  if (states.contains(MaterialState.disabled))
+                    return Colors.red;
+                  return null; // Defer to the widget's default.
+                }),
+                foregroundColor: MaterialStateProperty.resolveWith<Color?>(
+                    (Set<MaterialState> states) {
+                  if (states.contains(MaterialState.disabled))
+                    return Colors.blue;
+                  return null; // Defer to the widget's default.
+                }),
+              ),
+              onPressed: () {
+                _navigateToStorePage2(context);
+              },
+              child: Text('Select from store - Multiple color mode'),
             ),
           ],
         ),
@@ -133,13 +153,19 @@ class _MyHomePageState extends State<MyHomePage> {
         builder: (context) => StorePage(server: widget.server)));
   }
 
+  void _navigateToStorePage2(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => StorePage2(server: widget.server)));
+  }
+
   void _navigateToHowToUsePage(BuildContext context) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => HowToUsePage()));
   }
 
-  void _navigateToTestPage(BuildContext context) {
+  void _navigateToPaintingTestPage(BuildContext context, String path) {
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => StorePageTest(server: widget.server)));
+        builder: (context) =>
+            PaintingTestScreen(b: 'title', server: widget.server)));
   }
 }

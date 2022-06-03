@@ -11,22 +11,18 @@ import 'package:firebase_database/firebase_database.dart';
 
 class PaintingTestScreen extends StatefulWidget {
   late String b;
-  late String file;
   late final BluetoothDevice server;
   //final FirebaseApp app;
 
-  PaintingTestScreen(
-      {required this.b, required this.file, required this.server});
+  PaintingTestScreen({required this.b, required this.server});
 
   PaintingScreen(String a, String file, BluetoothDevice device) {
     this.b = a;
-    this.file = file;
     this.server = device;
   }
 
   @override
-  State<PaintingTestScreen> createState() =>
-      _PaintingTestScreenState(file_inner: file);
+  State<PaintingTestScreen> createState() => _PaintingTestScreenState();
 }
 
 class _Message {
@@ -39,7 +35,6 @@ class _Message {
 class _PaintingTestScreenState extends State<PaintingTestScreen> {
   Color _fillColor = Colors.white;
   bool think_enabled = false;
-  late String file_inner;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   final FirebaseDatabase referencedatabase = FirebaseDatabase(
       databaseURL:
@@ -49,7 +44,6 @@ class _PaintingTestScreenState extends State<PaintingTestScreen> {
   List<String> thoughts = List<String>.empty(growable: true);
 
   late String data_text = "";
-  _PaintingTestScreenState({required this.file_inner});
 
   static final clientID = 0;
   BluetoothConnection? connection;
@@ -217,7 +211,7 @@ class _PaintingTestScreenState extends State<PaintingTestScreen> {
                   style: TextStyle(color: Colors.black),
                 ),
                 style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.cyan)),
+                    backgroundColor: MaterialStateProperty.all(Colors.grey)),
               ),
               TextButton(
                 onPressed: () {
@@ -228,7 +222,7 @@ class _PaintingTestScreenState extends State<PaintingTestScreen> {
                   style: TextStyle(color: Colors.black),
                 ),
                 style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.cyan)),
+                    backgroundColor: MaterialStateProperty.all(Colors.grey)),
               ),
               SizedBox(
                 width: 50,
@@ -291,9 +285,10 @@ class _PaintingTestScreenState extends State<PaintingTestScreen> {
 
       thoughts.clear();
     }
-
-    think_enabled = false;
-    _fillColor = Colors.white;
+    setState(() {
+      think_enabled = false;
+      _fillColor = Colors.white;
+    });
   }
 
   void _onDataReceived(Uint8List data) {

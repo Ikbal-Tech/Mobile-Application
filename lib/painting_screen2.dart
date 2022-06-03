@@ -9,20 +9,20 @@ import 'dart:typed_data';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:http/http.dart' as http;
 
-class PaintingScreen extends StatefulWidget {
+class PaintingScreen2 extends StatefulWidget {
   late String file;
   late BluetoothDevice server;
   late String modal = 'Modal 1';
   late String epoch = '500';
-  PaintingScreen(
+  PaintingScreen2(
       {required this.file,
       required this.server,
       required this.modal,
       required this.epoch});
 
   @override
-  State<PaintingScreen> createState() =>
-      _PaintingScreenState(file, server, modal, epoch);
+  State<PaintingScreen2> createState() =>
+      _PaintingScreen2State(file, server, modal, epoch);
 }
 
 class _Message {
@@ -32,7 +32,7 @@ class _Message {
   _Message(this.whom, this.text);
 }
 
-class _PaintingScreenState extends State<PaintingScreen> {
+class _PaintingScreen2State extends State<PaintingScreen2> {
   Color _fillColor = Colors.white;
   Color specific_color = Colors.white;
   late String file_inner;
@@ -54,7 +54,7 @@ class _PaintingScreenState extends State<PaintingScreen> {
 
   List<int> array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-  _PaintingScreenState(
+  _PaintingScreen2State(
       String file, BluetoothDevice server, String modal, String epoch) {
     file_inner = file;
     this.server = server;
@@ -249,20 +249,7 @@ class _PaintingScreenState extends State<PaintingScreen> {
                       green_value = income_results_double[1] * 25.5;
                       blue_value = income_results_double[2] * 25.5;
 
-                      double m1 = return_max(
-                          income_results_double[0], income_results_double[1]);
-                      double m2 = return_max(
-                          income_results_double[1], income_results_double[2]);
-                      double m3 = return_max(m1, m2);
-
-                      if (income_results_double[0] == m3) {
-                        _fillColor = Color.fromARGB(255, 255, 0, 0);
-                      } else if (income_results_double[1] == m3) {
-                        _fillColor = Color.fromARGB(255, 0, 255, 0);
-                      } else if (income_results_double[2] == m3) {
-                        _fillColor = Color.fromARGB(255, 0, 0, 255);
-                      }
-                      specific_color = Color.fromARGB(255, red_value.toInt(),
+                      _fillColor = Color.fromARGB(255, red_value.toInt(),
                           green_value.toInt(), blue_value.toInt());
                     });
                     print("After first set state");
@@ -328,8 +315,11 @@ class _PaintingScreenState extends State<PaintingScreen> {
                   SizedBox(
                     height: 15,
                   ),
+                  SizedBox(
+                    height: 15,
+                  ),
                   Text(
-                    'Color to be painted: main color:',
+                    'Color to be painted: specific color:',
                     style: TextStyle(color: _fillColor),
                   ),
                   SizedBox(
@@ -337,20 +327,6 @@ class _PaintingScreenState extends State<PaintingScreen> {
                     height: 15,
                     child: DecoratedBox(
                       decoration: BoxDecoration(color: _fillColor),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Text(
-                    'Color to be painted: specific color:',
-                    style: TextStyle(color: specific_color),
-                  ),
-                  SizedBox(
-                    width: 15,
-                    height: 15,
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(color: specific_color),
                     ),
                   )
                 ]),
